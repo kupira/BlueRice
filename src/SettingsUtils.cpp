@@ -36,7 +36,7 @@ void ensureSettings(){
     ofs << "LAST_DEVICE=\n";
     ofs << "AUTO_CONNECT_LAST_DEVICE=false\n";
     ofs << "SHOW_MAC=false\n";
-    ofs << "SKIP_MENU_ON_SUCCESS=false\n";
+    ofs << "SKIP_MENU_ON_SUCCESS=true\n";
     ofs << "CONNECT_TIMEOUT=10\n";
 }
 
