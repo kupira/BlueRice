@@ -6,7 +6,7 @@
 #include <cstdlib>
 #include <iostream>
 
-const std::string CONFIG_DIR = std::string(getenv("HOME")) + "/.config/bt-rice/";
+const std::string CONFIG_DIR = std::string(getenv("HOME")) + "/.config/bluerice/";
 const std::string SETTINGS_FILE = CONFIG_DIR + "settings.conf";
 
 // Load settings from file into a map
