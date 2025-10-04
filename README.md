@@ -36,7 +36,7 @@ cd BlueRice
 make
 ```
 ---
-## Configuration (`~/.config/bt-rice/`)
+## Configuration (`~/.config/bluerice/settings.conf`)
 
 BlueRice automatically creates a configuration directory at first launch:
 
