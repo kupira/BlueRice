@@ -38,6 +38,4 @@ make
 ---
 ## Configuration (`~/.config/bluerice/settings.conf`)
 
-BlueRice automatically creates a configuration directory at first launch:
-
-~/.config/bt-rice/
+BlueRice automatically creates a configuration directory at first launch.
