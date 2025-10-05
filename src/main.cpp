@@ -96,7 +96,10 @@ int main() {
         }
 
         std::string selected = wofiSelect(menuText, "Select Device:");
-        if (selected.empty()) break;
+        if (selected.empty()) {
+            stopRequested = true;
+            return 0; // user closed menu
+        }
 
         std::string mac;
         for (auto &p : deviceMenu) if (p.first == selected) { mac = p.second; break; }
@@ -106,7 +109,10 @@ int main() {
         if (isDeviceConnected(mac)) {
             disconnectDevice(mac);
             success = !isDeviceConnected(mac);
-            if (success) std::cout << "Disconnected: " << selected << "\n";
+            if (success) {
+                std::cout << "Disconnected: " << selected << "\n";
+                sendNotification("BlueRice", "Disconnected from " + selected);
+            }
         }
         else {
             success = connectDeviceWithTimeout(mac, connectTimeout);

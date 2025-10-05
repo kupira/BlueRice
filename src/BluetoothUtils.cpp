@@ -9,6 +9,8 @@
 #include <atomic>
 #include <mutex>
 
+std::atomic<bool> stopRequested = false;
+
 // Execute shell command and capture output
 std::string execCommand(const std::string &cmd){
     std::string result;
@@ -75,22 +77,39 @@ void scanOn(){ execCommand("bluetoothctl scan on &"); }
 void scanOff(){ execCommand("bluetoothctl scan off"); }
 
 // Connect device with timeout
-bool connectDeviceWithTimeout(const std::string &mac,int seconds){
-    bool connected=false;
-    std::thread t([&](){
+
+bool connectDeviceWithTimeout(const std::string &mac, int seconds) {
+    std::atomic<bool> connected = false;
+    std::atomic<bool> done = false;
+
+    std::thread t([&]() {
         execCommand("bluetoothctl connect " + mac);
+        if (stopRequested) return;
         std::string info = execCommand("bluetoothctl info " + mac);
-        if(info.find("Connected: yes")!=std::string::npos) connected=true;
+        if (info.find("Connected: yes") != std::string::npos)
+            connected = true;
+        done = true;
     });
 
-    for(int i=0;i<seconds*10;i++){
-        if(connected) break;
+    for (int i = 0; i < seconds * 10; ++i) {
+        if (connected || stopRequested || done) break;
         std::this_thread::sleep_for(std::chrono::milliseconds(100));
     }
 
-    if(!connected) std::cerr<<"Timeout connecting to device\n";
+    if (t.joinable()) {
+        try {
+            t.detach();
+        } catch (...) {}
+    }
 
-    if(t.joinable()) t.detach();
+    if (stopRequested) {
+        std::cerr << "Connection canceled by user\n";
+        return false;
+    }
+
+    if (!connected)
+        std::cerr << "Timeout connecting to device\n";
+
     return connected;
 }
 

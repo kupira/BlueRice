@@ -1,6 +1,8 @@
 #pragma once
 #include <string>
 #include <vector>
+#include <atomic>
+extern std::atomic<bool> stopRequested;
 
 struct Adapter{ std::string name, mac; };
 struct Device{ std::string name, mac; };
