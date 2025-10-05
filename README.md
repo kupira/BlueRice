@@ -1,6 +1,6 @@
 # BlueRice
 
-**Version:** 0.1-beta  
+**Version:** 0.2-beta  
 
 BlueRice is a modular, menu-driven Bluetooth device manager for Linux. It allows connecting, and disconnecting Bluetooth devices via Wofi or future GUIs. Designed for Linux users who like lightweight, configurable interfaces.
 
@@ -10,11 +10,8 @@ BlueRice is a modular, menu-driven Bluetooth device manager for Linux. It allows
 
 - Connect and disconnect devices based on current status
 - Highlight connected devices in the menu
-- Configurable settings:
-  - Show/hide MAC addresses
-  - Auto-connect last device
-  - Connection timeout
-  - Skip menu on successful operation
+- Notifications
+- Configurable settings
 - Modular architecture for future GUI frontends
 
 ---
