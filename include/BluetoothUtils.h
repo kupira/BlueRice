@@ -15,4 +15,4 @@ bool isDeviceConnected(const std::string &mac);
 std::string wofiSelect(const std::vector<std::string>& options,const std::string &prompt);
 std::string execCommand(const std::string &cmd);
 std::string getDeviceInfo(const std::string &mac);
-
+void sendNotification(const std::string &title, const std::string &message);

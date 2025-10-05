@@ -1,4 +1,5 @@
-#include "BluetoothUtils.h"
+//#include "BluetoothUtils.h"
+#include "../include/BluetoothUtils.h" // WARN: DEBUG ONLY
 #include <cstdlib>
 #include <cstdio>
 #include <sstream>
@@ -102,3 +103,7 @@ bool isDeviceConnected(const std::string &mac){
     return info.find("Connected: yes")!=std::string::npos;
 }
 
+// Send notifications
+void sendNotification(const std::string &title, const std::string &message) {
+     execCommand("notify-send \"" + title + "\" \"" + message + "\"");
+}

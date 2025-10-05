@@ -112,10 +112,12 @@ int main() {
             success = connectDeviceWithTimeout(mac, connectTimeout);
             if (success) {
                 std::cout << "Connected: " << selected << "\n";
+                sendNotification("BlueRice", "Connected to " + selected);
                 setSetting("LAST_DEVICE", mac);
             }
             else {
                 std::cout << "Failed to connect: " << selected << "\n";
+                sendNotification("BlueRice", "Failed to connect to " + selected);
                 continue;
             }
         }
