@@ -1,6 +1,10 @@
 # Changelog
 All notable changes to **BlueRice** will be documented here.
 
+## [0.2.1-beta] - 2025-10-05
+### Fixed
+- Notifications enabled by default
+
 ## [0.2.0-beta] - 2025-10-05
 ### Added
 - Notifications
