@@ -5,9 +5,7 @@
 #include <sstream>
 #include <iostream>
 #include <thread>
-#include <chrono>
 #include <atomic>
-#include <mutex>
 
 std::atomic<bool> stopRequested = false;
 
