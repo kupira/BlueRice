@@ -9,7 +9,7 @@
 #include <mutex>
 
 int main() {
-    // Ensure default settings exist
+    // --- Ensure default settings exist ---
     ensureSettings();
 
     int connectTimeout = getIntSetting("CONNECT_TIMEOUT", 10);
@@ -20,17 +20,30 @@ int main() {
     std::string lastAdapter = getSetting("LAST_ADAPTER");
     auto adapters = listAdapters();
     std::vector<Adapter> realAdapters;
-    for (auto &a : adapters) if (a.mac.find(":") != std::string::npos) realAdapters.push_back(a);
-    if (realAdapters.empty()) { std::cerr << "No valid adapters\n"; return 1; }
+
+    // Filter out invalid adapters
+    for (auto &a : adapters) 
+        if (a.mac.find(":") != std::string::npos) realAdapters.push_back(a);
+
+    if (realAdapters.empty()) { 
+        std::cerr << "No valid adapters\n"; 
+        return 1; 
+    }
 
     std::string selectedAdapter;
     bool found = false;
+
+    // Use last adapter if still available
     if (!lastAdapter.empty()) {
-        for (auto &a : realAdapters) if (a.mac == lastAdapter) { selectedAdapter = a.mac; found = true; break; }
+        for (auto &a : realAdapters) 
+            if (a.mac == lastAdapter) { selectedAdapter = a.mac; found = true; break; }
     }
+
     if (!found) {
+        // Let user select adapter if multiple are present
         std::vector<std::string> adapterOptions;
         for (auto &a : realAdapters) adapterOptions.push_back(a.name);
+
         if (adapterOptions.size() == 1) selectedAdapter = realAdapters[0].mac;
         else {
             std::string choice = wofiSelect(adapterOptions, "Select Adapter:");
@@ -85,6 +98,7 @@ int main() {
                 menuText.push_back("No devices found yet...");
             }
             else {
+                // Build menu entries from discovered devices
                 for (auto &d : discoveredDevices) {
                     std::string entry = d.name;
                     if (isDeviceConnected(d.mac)) entry = "[Connected] " + entry;
@@ -95,40 +109,55 @@ int main() {
             }
         }
 
+        // Show device selection menu
         std::string selected = wofiSelect(menuText, "Select Device:");
         if (selected.empty()) {
             stopRequested = true;
-            return 0; // user closed menu
+            break; // user closed menu
         }
 
+        // Find the MAC address for the selected device safely
         std::string mac;
-        for (auto &p : deviceMenu) if (p.first == selected) { mac = p.second; break; }
-        if (mac.empty()) { std::cerr << "MAC not found\n"; continue; }
+        for (auto &p : deviceMenu) {
+            if (p.first == selected) {
+                mac = p.second;
+                break;
+            }
+        }
+
+        if (mac.empty()) { 
+            std::cerr << "MAC not found for selected device. Skipping...\n"; 
+            continue; // safely skip this iteration
+        }
 
         bool success = false;
+
         if (isDeviceConnected(mac)) {
+            // --- Disconnect the device ---
             disconnectDevice(mac);
-            success = !isDeviceConnected(mac);
+            success = !isDeviceConnected(mac); // success = true if disconnected
             if (success) {
                 std::cout << "Disconnected: " << selected << "\n";
                 sendNotification("BlueRice", "Disconnected from " + selected);
             }
-        }
+        } 
         else {
+            // --- Connect to the device ---
             success = connectDeviceWithTimeout(mac, connectTimeout);
             if (success) {
                 std::cout << "Connected: " << selected << "\n";
                 sendNotification("BlueRice", "Connected to " + selected);
-                setSetting("LAST_DEVICE", mac);
-            }
-            else {
+                setSetting("LAST_DEVICE", mac); // only save if connect succeeded
+            } else {
                 std::cout << "Failed to connect: " << selected << "\n";
                 sendNotification("BlueRice", "Failed to connect to " + selected);
-                continue;
+                continue; // skip skipMenuOnSuccess check to avoid segfault
             }
         }
 
+        // Close menu if the operation succeeded and setting allows
         if (skipMenuOnSuccess && success) break;
+
         std::this_thread::sleep_for(std::chrono::milliseconds(500));
     }
 
