@@ -24,6 +24,7 @@ BlueRice is a modular, menu-driven Bluetooth device manager for Linux. It allows
 - `wofi`
 - `bluetoothctl`
 - `cmake`
+- `make`
 
 You can install `BlueRice` on Arch using AUR:
 
@@ -34,8 +35,13 @@ or manually:
 ```
 git clone https://github.com/kupira/BlueRice.git
 cd bluerice
+mkdir build && cd build
+cmake ..
 make
 ```
+The executable will appear as:
+```./bluerice```
+
 ---
 ## Configuration (`~/.config/bluerice/settings.conf`)
 
