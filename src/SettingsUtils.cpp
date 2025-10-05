@@ -38,6 +38,7 @@ void ensureSettings(){
     ofs << "SHOW_MAC=false\n";
     ofs << "SKIP_MENU_ON_SUCCESS=true\n";
     ofs << "CONNECT_TIMEOUT=10\n";
+    ofs << "SHOW_NOTIFICATIONS=true\n";
 }
 
 // Get string setting

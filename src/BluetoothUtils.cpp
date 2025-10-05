@@ -1,5 +1,5 @@
-//#include "BluetoothUtils.h"
-#include "../include/BluetoothUtils.h" // WARN: DEBUG ONLY
+#include "BluetoothUtils.h"
+#include "SettingsUtils.h"
 #include <cstdlib>
 #include <cstdio>
 #include <sstream>
@@ -105,5 +105,6 @@ bool isDeviceConnected(const std::string &mac){
 
 // Send notifications
 void sendNotification(const std::string &title, const std::string &message) {
+    if(!getBoolSetting("SHOW_NOTIFICATIONS")) return;
      execCommand("notify-send \"" + title + "\" \"" + message + "\"");
 }
