@@ -26,7 +26,7 @@ BlueRice is a modular, menu-driven Bluetooth device manager for Linux. It allows
 - `cmake`
 - `make`
 
-You can install `BlueRice` on Arch using AUR: (WARINING: may be temporarily unavailable)
+You can install `BlueRice` on Arch using AUR: (WARNING: may be temporarily unavailable)
 
 ```
 yay -S bluerice
