@@ -53,6 +53,11 @@ bool getBoolSetting(const std::string &key){
     auto val = getSetting(key);
     return val=="true" || val=="1";
 }
+bool getBoolSetting(const std::string &key, bool defaultValue = false) {
+    auto val = getSetting(key);
+    if (val.empty()) return defaultValue;
+    return val == "true" || val == "1";
+}
 
 // Get integer setting with default
 int getIntSetting(const std::string &key, int defaultValue){

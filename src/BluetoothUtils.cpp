@@ -124,6 +124,6 @@ bool isDeviceConnected(const std::string &mac){
 
 // Send notifications
 void sendNotification(const std::string &title, const std::string &message) {
-    if(!getBoolSetting("SHOW_NOTIFICATIONS")) return;
+    if(!getBoolSetting("SHOW_NOTIFICATIONS", true)) return;
      execCommand("notify-send \"" + title + "\" \"" + message + "\"");
 }

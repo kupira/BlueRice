@@ -5,5 +5,6 @@ void ensureSettings();
 std::string getSetting(const std::string &key);
 void setSetting(const std::string &key, const std::string &value);
 bool getBoolSetting(const std::string &key);
+bool getBoolSetting(const std::string &key, bool defaultValue);
 int getIntSetting(const std::string &key, int defaultValue);
 
